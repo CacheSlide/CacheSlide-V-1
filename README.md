@@ -1,4 +1,4 @@
-<p align="center">
+<img width="3752" height="832" alt="image" src="https://github.com/user-attachments/assets/071d1ae5-2d28-4e76-9401-0c53b3034396" /><p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./CacheSlide.png">
     <img
@@ -62,7 +62,7 @@ We match the hardware/software profile described in the paper:
 
 ## Installation
 
-### Option A: Install pinned vLLM (fastest)
+### Option A: Install pinned CacheSlide (fastest)
 
 ```bash
 python -m venv .venv
@@ -73,27 +73,9 @@ pip install  CacheSlide v1
 
 (Install command and version pin are shown on PyPI.) ([PyPI][1])
 
-### Option B: Build vLLM 0.8.5 from source (recommended for CUDA 12.6 parity)
-
-```bash
-git clone https://github.com/vllm-project/vllm.git
-cd vllm
-git checkout v0.8.5
-
-# If you use many cores:
-export MAX_JOBS=32
-
-pip install -U pip setuptools wheel
-pip install -e .
-```
-
-(vLLM documents source builds and build-time env vars like `MAX_JOBS`.) ([vLLM][2])
-
----
-
 ## Runtime Environment Parameters (vLLM)
 
-vLLM exposes runtime env vars for reproducibility and backend selection. Common ones you may want to set:
+CacheSlide exposes runtime env vars for reproducibility and backend selection. Common ones you may want to set:
 
 ### Attention backend
 
@@ -101,7 +83,6 @@ vLLM exposes runtime env vars for reproducibility and backend selection. Common 
 # Example: force a specific backend (choose what your system supports)
 export VLLM_ATTENTION_BACKEND=FLASH_ATTN
 ```
-
 (`VLLM_ATTENTION_BACKEND` is documented by vLLM.) 
 
 ### Cache / compilation
@@ -141,7 +122,7 @@ Below is the **recommended experiment flow** that matches your “template” (b
 export CUDA_VISIBLE_DEVICES=0
 export HF_HOME=/path/to/hf_cache   # optional but recommended
 
-python scripts/run_cacheslide.py \
+python examples/Cacheslide.py \
   --model mistralai/Mistral-7B-Instruct-v0.2 \
   --dataset hotpot_qa \
   --split validation \
@@ -158,7 +139,7 @@ python scripts/run_cacheslide.py \
 ```bash
 export CUDA_VISIBLE_DEVICES=0,1
 
-python scripts/run_cacheslide.py \
+python examples/Cacheslide.py  \
   --model <your-70b-model> \
   --tensor_parallel_size 2 \
   --dataset hotpot_qa \
@@ -179,8 +160,6 @@ python scripts/run_agent.py \
   --model mistralai/Mistral-7B-Instruct-v0.2 \
   --dataset swe_bench \
   --enable_cacheslide
-```
-
 ---
 
 ## Citation
@@ -203,8 +182,3 @@ If you use CacheSlide for your research, please cite our paper:
 * **Backend determinism**: pin `VLLM_ATTENTION_BACKEND` for consistent kernels across machines. 
 
 ---
-
-If you want, paste your repo’s actual script names/flags (e.g., what you called `cache_fuse_metadata`, LoRA pre-encoding hooks, cross-attn KV pregen), and I’ll rewrite the **How to Run** section so it matches your real CLI exactly (still fully English).
-
-[1]: https://pypi.org/project/vllm/0.8.5/ "vllm · PyPI"
-[2]: https://docs.vllm.ai/en/v0.8.5/getting_started/installation/gpu.html "GPU — vLLM"
