@@ -1,4 +1,4 @@
-<img width="3752" height="832" alt="image" src="https://github.com/user-attachments/assets/071d1ae5-2d28-4e76-9401-0c53b3034396" /><p align="center">
+
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./CacheSlide.png">
     <img
